@@ -1,0 +1,59 @@
+﻿@model AssignRolesViewModel
+
+@{
+    ViewData["Title"] = "Asignar Roles";
+}
+
+<h2 class="text-center">Asignar roles al usuario: "@Model.FullName"</h2>
+
+<div class="mt-4">
+    <div class="row">
+        <div class="col-10 col-md-8 mx-auto">
+            <form asp-area="Identity" asp-controller="AdminUser" asp-action="AssignRoles" method="post">
+                <input type="hidden" asp-for="Id" />
+
+                <div class="text-center my-4 p-4" style="background-color: #f8f9fa; border-radius: 10px;">
+                    <label class="form-label display-6 mb-4">Roles Disponibles</label>
+                    <div class="row justify-content-center">
+                        @foreach (var role in Model.AllRoles!)
+                        {
+                            var roleId = "role_" + role; // Generar un id único para cada checkbox
+                            <div class="col-6 col-md-4 col-lg-3 d-flex justify-content-center mb-4">
+                                <div class="card" style="width: 100%; max-width: 18rem; border-radius: 10px;">
+                                    <div class="card-body text-center">
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="@roleId" name="SelectedRoles" value="@role"
+                                            @(Model.UserRoles.Contains(role!) ? "checked" : "") />
+                                            <label class="form-check-label ms-1" for="@roleId">@role</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a class="btn btn-secondary" asp-area="Identity" asp-controller="AdminUser" asp-action="Index">Volver</a>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style type="text/css">
+        .form-check-input {
+            cursor: pointer;
+            width: 1.2rem;
+            height: 1.2rem;
+        }
+
+        .form-check-label {
+            cursor: pointer;
+            font-weight: 500; /* Añade algo de peso para que el texto sea más visible */
+        }
+    </style>
+}

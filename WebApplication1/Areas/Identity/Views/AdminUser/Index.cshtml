@@ -1,0 +1,148 @@
+﻿@model IEnumerable<UserViewModel>
+@inject UserManager<User> userManager
+
+@{
+    ViewData["Title"] = "Administración Usuarios";
+}
+
+<h2 class="text-center">Administración de usuarios</h2>
+
+@{
+    await Html.RenderPartialAsync("_StatusMessage", TempData["StatusMessage"] as string);
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card border">
+            <div class="card-header">
+                <h3><strong>Lista de usuarios</strong></h3>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    @if (Model.Count() > 0)
+                    {
+                        <table class="table table-bordered table-hover nowrap" id="datatables" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>@Html.DisplayNameFor(u => u.Name)</th>
+                                    <th>@Html.DisplayNameFor(u => u.LastName)</th>
+                                    <th>@Html.DisplayNameFor(u => u.Email)</th>
+                                    <th>@Html.DisplayNameFor(u => u.PhoneNumber)</th>
+                                    <th>@Html.DisplayNameFor(u => u.IsActive)</th>
+                                    <th>@Html.DisplayNameFor(u => u.Roles)</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(role => item.Name)</td>
+                                        <td>@Html.DisplayFor(role => item.LastName)</td>
+                                        <td>@Html.DisplayFor(role => item.Email)</td>
+                                        <td>@Html.DisplayFor(role => item.PhoneNumber)</td>
+                                        <td class="text-center">@(item.IsActive ? "SI" : "NO")</td>
+                                        <td>
+                                            <div class="d-flex flex-column">
+                                                @foreach (var role in item.Roles)
+                                                {
+                                                    <span class="badge rounded-pill bg-secondary mb-1"
+                                                          style="max-width: 80%;">@role</span>
+                                                }
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group" style="gap: 10px;">
+                                                <!-- Botón de Editar -->
+                                                <a class="btn btn-primary" asp-area="Identity" asp-controller="AdminUser" asp-action="Edit"
+                                                   asp-route-id="@item.Id" title="Editar">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </a>
+
+                                                <!-- Botón de Asignar Roles -->
+                                                <a class="btn btn-info" asp-area="Identity" asp-controller="AdminUser" asp-action="AssignRoles"
+                                                   asp-route-id="@item.Id" title="Asignar Roles">
+                                                    <i class="bi bi-people-fill"></i>
+                                                </a>                                                
+
+                                                <!-- Botón de Bloquear/Desbloquear -->
+                                                @if (item.LockoutEnd == null || item.LockoutEnd < DateTime.UtcNow)
+                                                {
+                                                    <form method="post" asp-area="Identity" asp-controller="AdminUser" asp-action="Lock"
+                                                          asp-route-id="@item.Id" style="display: inline;">
+                                                        <button type="submit" class="btn btn-secondary text-white" title="Bloquear"
+                                                        onclick="return confirm('¿Está seguro de bloquear este usuario?')">
+                                                            <i class="bi bi-unlock"></i>
+                                                        </button>
+                                                    </form>
+                                                }
+                                                else
+                                                {
+                                                    <form method="post" asp-area="Identity" asp-controller="AdminUser" asp-action="Unlock"
+                                                          asp-route-id="@item.Id" style="display: inline;">
+                                                        <button type="submit" class="btn btn-warning text-white" title="Desbloquear"
+                                                        onclick="return confirm('¿Está seguro de habilitar este usuario?')">
+                                                            <i class="bi bi-lock"></i>
+                                                        </button>
+                                                    </form>
+                                                }
+
+                                                <!-- Botón de Eliminar, solo si el usuario actual no es él mismo -->
+                                                @if ((await userManager.GetUserAsync(User))?.Email != item.Email)
+                                                {
+                                                    <form method="post" asp-area="Identity" asp-controller="AdminUser" asp-action="Delete"
+                                                          asp-route-id="@item.Id" style="display: inline;">
+                                                        <button type="submit" class="btn btn-danger" title="Eliminar"
+                                                                onclick="return confirm('¿Está seguro de borrar este registro?')">
+                                                            <i class="bi bi-trash-fill"></i>
+                                                        </button>
+                                                    </form>
+                                                }
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <p>No hay registros</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#datatables').DataTable(
+                {
+                    responsive: true, //https://datatables.net/extensions/responsive/
+                    language: {
+                        "decimal": ",",
+                        "thousands": ".",
+                        "emptyTable": "No hay datos disponibles",
+                        "info": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                        "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                        "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+                        "zeroRecords": "No se encontraron resultados",
+                        "infoPostFix": "",
+                        "lengthMenu": "Mostrar _MENU_ registros",
+                        "loadingRecords": "Cargando...",
+                        "sSearch": "Buscar:",
+                        "oPaginate": {
+                            "sFirst": "Primero",
+                            "sLast": "Último",
+                            "sNext": "Siguiente",
+                            "sPrevious": "Anterior"
+                        },
+                        "sProcessing": "Cargando..."
+                    }
+                }
+            );
+        });
+    </script>
+}

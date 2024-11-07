@@ -1,0 +1,40 @@
+﻿@model RoleViewModel
+@{
+    ViewData["Title"] = "Crear Nuevo Rol";
+}
+
+<div class="card">
+    <div class="card-body">
+        <h3 class="card-title text-center">Crear Nuevo Rol</h3>
+        <form asp-area="Identity" asp-controller="Role" asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="row mt-4">
+                <div class="col-12 col-md-8 mx-auto">
+
+                    <div class="mb-3">
+                        <label asp-for="Name"></label>
+                        <input asp-for="Name" class="form-control" placeholder="Ingresa el nombre del nuevo rol">
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div>
+                        <button type="submit" class="btn btn-primary w-100 btn-lg">
+                            Crear Rol <i class="bi-arrow-right-circle-fill"></i>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a class="mt-3 btn btn-secondary" asp-area="Identity" asp-controller="Role" asp-action="Index">Regresar</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,65 @@
+﻿@{
+    ViewData["Title"] = "Inicio";
+}
+
+@{
+    await Html.RenderPartialAsync("_StatusMessage", TempData["StatusMessage"] as string);
+}
+
+<div class="container mt-5">
+    <h2 class="text-center">Bienvenido a la Plataforma de Torneos</h2>
+    <p class="text-center">Elige una opción para comenzar:</p>
+    <div class="row">
+        <!-- Gestión Cuerdas -->
+        <div class="col-md-4">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Gestión de Cuerdas</h5>
+                    <p class="card-text">Administra las cuerdas de los participantes.</p>
+                    <a asp-area="Torneos" asp-controller="Cuerdas" asp-action="Index" class="btn btn-secondary">Ir a Gestión</a>
+                </div>
+            </div>
+        </div>
+        <!-- Gestión Sorteo -->
+        <div class="col-md-4">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Gestión de Sorteo</h5>
+                    <p class="card-text">Organiza los sorteos de cada pelea.</p>
+                    <a asp-area="Torneos" asp-controller="Sorteo" asp-action="Index" class="btn btn-primary">Ir a Sorteo</a>
+                </div>
+            </div>
+        </div>
+        <!-- Control de Combate -->
+        <div class="col-md-4">
+            <div class="card text-white bg-danger mb-3">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Control de Pelea</h5>
+                    <p class="card-text">Administra y controla cada pelea.</p>
+                    <a asp-area="Torneos" asp-controller="Combate" asp-action="Index" class="btn btn-primary">Ir a Control</a>
+                </div>
+            </div>
+        </div>
+        <!-- Estadísticas -->
+        <div class="col-md-4 mt-3">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Estadísticas</h5>
+                    <p class="card-text">Visualiza estadísticas y resultados.</p>
+                    <a asp-area="Torneos" asp-controller="Estadisticas" asp-action="Index" class="btn btn-primary">Ver Estadísticas</a>
+                </div>
+            </div>
+        </div>
+        <!-- Configuración -->
+        <div class="col-md-4 mt-3">
+            <div class="card text-white bg-warning mb-3">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Configuración</h5>
+                    <p class="card-text">Configura las preferencias de la aplicación.</p>
+                    <a asp-area="Torneos" asp-controller="Configuracion" asp-action="Index" class="btn btn-primary">Ir a Configuración</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

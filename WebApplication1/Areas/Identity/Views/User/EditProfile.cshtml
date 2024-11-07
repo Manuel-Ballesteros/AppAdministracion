@@ -1,0 +1,58 @@
+﻿@model UserViewModel
+
+@{
+    ViewData["Title"] = "Editar Perfil";
+}
+
+<div class="card">
+    <div class="card-body">
+        <h3 class="card-title text-center">Editar perfil de usuario</h3>
+        <form asp-area="Identity" asp-controller="User" asp-action="EditProfile" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+            <div class="row mt-4">
+                <div class="col-md-8 col-lg-6 mx-auto">
+
+                    <div class="mb-3">
+                        <label asp-for="Name"></label>
+                        <input asp-for="Name" class="form-control" placeholder="Ingresa el nombre">
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="LastName"></label>
+                        <input asp-for="LastName" class="form-control" placeholder="Ingresa el apellido">
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Email"></label>
+                        <input asp-for="Email" class="form-control" disabled>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="PhoneNumber"></label>
+                        <input asp-for="PhoneNumber" class="form-control" placeholder="Ingresa el numero de teléfono celular">
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+
+                    <div>
+                        <button type="submit" class="btn btn-primary w-100 btn-lg">Actualizar</button>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
